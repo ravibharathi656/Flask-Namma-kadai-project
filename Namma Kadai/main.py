@@ -47,9 +47,12 @@ def add_i():
         item_id = generate_item_id()
         if item_exists(item_name):
             alert_message = "Item already exists."
+            time = datetime.datetime.now()
+            updat_i1(item_id, item_name, time)
         else:
-            insert_item(item_id, item_name)
-    
+            time = datetime.datetime.now()
+            insert_item(item_id, item_name,time)
+            updat_i1(item_id, item_name, time)
     company_name, cash = fetch_company_info()
     items = fetch_items()
     return render_template("items.html", company_name=company_name, cash=cash, items=items, alert_message=alert_message)
@@ -92,6 +95,11 @@ def view_purchases():
     purchases = fetch_purchases(company_name)
     alert_message = request.args.get('alert_message')
     return render_template("purchase.html", company_name=company_name, cash=cash, purchases=purchases)
+@a.route('/view_items1')
+def view_items1():
+    company_name, cash = fetch_company_info() 
+    items1 = fetch_items1(company_name)  
+    return render_template("items.html", company_name=company_name, cash=cash, items=items1)
 @a.route('/sales')
 def S():
     company_name, cash = fetch_company_info()
@@ -171,7 +179,7 @@ def fetch_company_info1():
         return "Company Name Not Found", 0
 def fetch_items():
     cur = sql.connection.cursor()
-    cur.execute("SELECT item_id, item_name FROM item")
+    cur.execute("SELECT item_id, item_name ,time FROM item")
     items = cur.fetchall()
     cur.close()
     return items
@@ -191,7 +199,7 @@ def generate_item_id():
     
     return new_id
 
-def insert_item(item_id, item_name):
+def insert_item(item_id, item_name,time):
     cur = sql.connection.cursor()
     sql.connection.commit()
     name = item_name.lower()
@@ -201,7 +209,7 @@ def insert_item(item_id, item_name):
     if existing_purchase:
         print("item has aldredy exsists")
     else:
-        cur.execute("INSERT INTO item (item_id, item_name) VALUES (%s, %s)", (item_id, name))
+        cur.execute("INSERT INTO item (item_id, item_name,time) VALUES (%s, %s,%s)", (item_id, name,time))
         sql.connection.commit()
     sql.connection.commit()
     cur.close()
@@ -247,6 +255,11 @@ def update_balance_and_insert_purchase(company_name, purchase_id, item_id, qty, 
                 (company_name, purchase_id, item_id, qty, rate, amount, time,name))
     sql.connection.commit()
     cur.close()
+def updat_i1(item_id, item_name, time):
+    cur = sql.connection.cursor()
+    cur.execute("INSERT INTO item1 (i_id,i_name,time) VALUES (%s, %s, %s)", (item_id,item_name,time))
+    sql.connection.commit()
+    cur.close()
 def u1( item_id, qty):
     cur = sql.connection.cursor()
     cur.execute("SELECT item_name FROM item WHERE item_id = %s", (item_id,))
@@ -286,6 +299,11 @@ def fetch_purchases(company_name):
     
     cur.close()
     return purchases_with_item_name
+def fetch_items1(company):
+    cur = sql.connection.cursor()
+    cur.execute("SELECT i_id, i_name, time FROM item")
+    item1s = cur.fetchall()
+    return item1s
 def update_balance_and_insert_sale(company_name, s_id, i_id, rate, qty, amount, time):
     cur = sql.connection.cursor()
     cur.execute("SELECT item_name FROM item WHERE item_id = %s", (i_id,))
