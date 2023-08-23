@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Item</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica', Arial, sans-serif; 
+            background-image: url('static/7792082.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: yellow;
+        }
+
+        .container {
+            text-align: center;
+            margin: 150px auto;
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgba(255, 255, 224, 0.9);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 30%;
+            margin-bottom: 15px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            background-color: #333;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Edit Item</h3>
+        <form action="{{ url_for('edit_item', item_id=item[0]) }}" method="post">
+            New Item Name: <input type="text" name="new_item_name" value="{{ item[1] }}"><br>
+            <input type="submit" value="Save">
+        </form>
+        <a href="{{ url_for('I') }}">Back to Items</a>
+    </div>
+</body>
+</html>

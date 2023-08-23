@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Purchase</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('static/7792082.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .container {
+            text-align: center;
+            margin: 50px auto;
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 224, 0.9);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 20px; 
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #e0e0e0;
+            border-radius: 25px; 
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #FFD700; 
+            color: white;
+        }
+
+        td {
+            background-color: #FFFFE0; 
+        }
+
+        input[type="text"], input[type="number"], select {
+            padding: 8px;
+            border-radius: 6px; 
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 18%;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            background-color: #333;
+            color: white;
+            border-radius: 18px; 
+            cursor: pointer;
+            width: 120px;
+        }
+    </style>
+    <script>
+        function showAlert(message) {
+            document.getElementById("popupMessage").textContent = message;
+            document.getElementById("alertPopup").style.display = "block";
+        }
+
+        function closePopup() {
+            document.getElementById("alertPopup").style.display = "none";
+        }
+
+        function checkBalance() {
+            var cash = { cash };
+            var qty = parseInt(document.getElementById("qty").value);
+            var rate = parseInt(document.getElementById("rate").value);
+            var amount = qty * rate;
+            
+            if (amount > cash) {
+                showAlert("Insufficient balance. You do not have enough cash to make this purchase.");
+                return false;
+            }
+            
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div id="alertPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <p id="popupMessage" class="popup-message"></p>
+        </div>
+    </div>
+    <div class="navbar">
+        <a href="{{ url_for('I') }}">Items</a>
+        <a href="{{ url_for('P') }}">Purchase</a>
+        <a href="{{ url_for('S') }}">Sales</a>
+        <a href="{{ url_for('view_purchases') }}">View Purchases</a>
+        <a href="{{ url_for('view_sales') }}">View Sales</a>
+        <a href="{{ url_for('Am') }}">Add Amount</a>
+    </div>
+    <div class="container">
+        <h2>Welcome to {{ company_name }}</h2>
+        <p>Cash: Rs {{ cash }}</p>
+        <h3>Add Purchase</h3>
+        <form action="{{ url_for('add_purchase') }}" method="post" onsubmit="return checkBalance()">
+            Item: 
+            <select name="item_id">
+                {% for item in items %}
+                    <option value="{{ item[0] }}">{{ item[1] }}</option>
+                {% endfor %}
+            </select><br><br>
+            Quantity: <input type="number" name="qty"><br><br>
+            Rate: <input type="number" name="rate"><br><br>
+            <input type="submit" value="Add Purchase">
+        </form>
+        <h3>Purchase History</h3>
+        <table>
+            <tr>
+                <th>Purchase ID</th>
+                <th>Item ID</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th>Time / Date</th>
+                <th>I_name</th>
+            </tr>
+            {% for purchase in purchases %}
+                <tr>
+                    <td>{{ purchase[0] }}</td>
+                    <td>{{ purchase[2] }}</td>
+                    <td>{{ purchase[3] }}</td>
+                    <td>{{ purchase[4] }}</td>
+                    <td>{{ purchase[5] }}</td>
+                    <td>{{ purchase[1] }}</td>
+                    <td>{{ purchase[6] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

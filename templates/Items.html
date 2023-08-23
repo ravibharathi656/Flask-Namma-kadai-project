@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Items</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica', Arial, sans-serif; 
+            background-image: url('static/7792082.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            text-align: center;
+            margin: 50px auto;
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 224, 0.9); 
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .alert {
+            padding: 40px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+            font-size: 14px; 
+        }
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 10px; 
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 15%;
+            height: 2%;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('I') }}">Items</a>
+        <a href="{{ url_for('P') }}">Purchase</a>
+        <a href="{{ url_for('S') }}">Sales</a>
+        <a href="{{ url_for('view_purchases') }}">View Purchases</a>
+        <a href="{{ url_for('view_sales') }}">View Sales</a>
+        <a href="{{ url_for('Am') }}">Add Amount</a>
+    </div>
+    <div class="container">
+        <h2 style="font-size: 20px; font-weight: bold;">Welcome to {{ company_name }}</h2>
+        <p style="font-size: 16px;">Cash: Rs{{ cash }}</p>
+        <h3 style="font-size: 18px; font-weight: bold;">Add Item</h3>
+        <form action="{{ url_for('add_i') }}" method="post">
+            Item Name: <input type="text" name="item_name">
+            <input type="submit" value="Add">
+        </form>
+        <div id="alert-box" style="display: none;"></div>
+        <h3 style="font-size: 18px; font-weight: bold;">Items List</h3>
+        <ul>
+            {% for item in items %}
+                <li>{{ item[0] }} - {{ item[1] }} <a href="{{ url_for('edit_item', item_id=item[0]) }}">Edit</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        var alertMessage = "{{ alert_message }}"; 
+        if (alertMessage) {
+            var alertBox = document.getElementById("alert-box");
+            alertBox.innerHTML = '<div class="alert">' +
+                '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>' +
+                alertMessage + '</div>';
+            alertBox.style.display = "block";
+        }
+    </script>
+</body>
+</html>

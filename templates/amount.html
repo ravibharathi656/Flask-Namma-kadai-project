@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Amount</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('static/7792082.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .container {
+            text-align: center;
+            margin: 50px auto;
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 224, 0.9);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+        }
+
+        input[type="number"], select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 10%;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            background-color: #333;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .alert {
+            padding: 10px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('I') }}">Items</a>
+        <a href="{{ url_for('P') }}">Purchase</a>
+        <a href="{{ url_for('S') }}">Sales</a>
+        <a href="{{ url_for('view_purchases') }}">View Purchases</a>
+        <a href="{{ url_for('view_sales') }}">View Sales</a>
+        <a href="{{ url_for('Am') }}">Add Amount</a>
+    </div>
+    <div class="container">
+        <h2>Welcome to {{ company_name }}</h2>
+        <p>Cash: Rs{{ cash }}</p><br>
+        <h3>Add Amount</h3>
+        <form action="{{ url_for('add_amount') }}" method="post" onsubmit="return validateAmount()">
+            Amount: <input type="number" id="amount" name="Am"><br><br>
+            <input type="submit" value="Add Amount">
+        </form>
+        <div class="alert" id="amountAlert">Minimum amount must be greater than 0.</div>
+        <script>
+            function validateAmount() {
+                var amountInput = document.getElementById("amount");
+                var enteredAmount = parseInt(amountInput.value);
+                var alertDiv = document.getElementById("amountAlert");
+
+                if (enteredAmount <= 0) {
+                    alertDiv.style.display = "block";
+                    return false;
+                } else {
+                    alertDiv.style.display = "none";
+                    return true;
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>
