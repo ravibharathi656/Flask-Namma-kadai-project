@@ -64,6 +64,12 @@
         .closebtn:hover {
             color: black;
         }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+        }
         ul {
             list-style-type: none;
             padding-left: 0;
@@ -90,6 +96,7 @@
         <a href="{{ url_for('S') }}">Sales</a>
         <a href="{{ url_for('view_purchases') }}">View Purchases</a>
         <a href="{{ url_for('view_sales') }}">View Sales</a>
+        <a href="{{ url_for('view_items1') }}">View items</a>
         <a href="{{ url_for('Am') }}">Add Amount</a>
     </div>
     <div class="container">
@@ -107,6 +114,21 @@
                 <li>{{ item[0] }} - {{ item[1] }} <a href="{{ url_for('edit_item', item_id=item[0]) }}">Edit</a></li>
             {% endfor %}
         </ul>
+        <h3>Item Table</h3>
+        <table>
+            <tr>
+                <th>Item ID</th>
+                <th>name</th>
+                <th>Time / Date</th>
+            </tr>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item[0] }}</td>
+                    <td>{{ item[1] }}</td>
+                    <td>{{ item[2] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 
     <script>
